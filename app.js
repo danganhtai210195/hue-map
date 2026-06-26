@@ -1,35 +1,8 @@
-// kiểm tra xem thư viện có load không
-if (typeof ol === "undefined") {
-  alert("Không tải được OpenLayers (Internet bị chặn hoặc lỗi mạng)");
-}
-
-// tạo bản đồ
-const map = new ol.Map({
-  target: 'map',
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  view: new ol.View({
-    center: ol.proj.fromLonLat([107.585, 16.463]), // Huế
-    zoom: 11
-  })
-});
-
-// test marker
-const marker = new ol.Feature({
-  geometry: new ol.geom.Point(
-    ol.proj.fromLonLat([107.585, 16.463])
-  )
-});
-
-const vectorSource = new ol.source.Vector({
-  features: [marker]
-});
-
-const vectorLayer = new ol.layer.Vector({
-  source: vectorSource
-});
-
-map.addLayer(vectorLayer);
+// Test đơn giản KHÔNG phụ thuộc Internet map tiles
+document.getElementById("map").innerHTML =
+  "<div style='padding:20px;font-family:Arial'>"
+  + "✅ Website đã chạy thành công trên Vercel<br><br>"
+  + "❗ Lỗi hiện tại: bị chặn bản đồ nền (map tiles)<br><br>"
+  + "👉 Điều này là do mạng hoặc ISP chặn OpenStreetMap<br><br>"
+  + "📌 Bước tiếp theo: chuyển sang Google Maps API (ổn định hơn)"
+  + "</div>";
