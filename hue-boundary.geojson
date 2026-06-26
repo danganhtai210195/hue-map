@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Phường Thuận Hóa"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[107.55,16.47],[107.60,16.47],[107.60,16.43],[107.55,16.43],[107.55,16.47]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Phường Phú Xuân"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[107.58,16.49],[107.63,16.49],[107.63,16.45],[107.58,16.45],[107.58,16.49]]]
+      }
+    }
+  ]
+}
