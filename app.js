@@ -65,3 +65,22 @@ fetch('hue-boundary.geojson')
     });
 
   });
+fetch('/muc_nuoc_hue.xlsx')
+  .then(() => fetch('https://opensheet.elk.sh/demo/demo')) 
+  .catch(() => null);
+
+// 👉 tạm dùng dữ liệu giả (vì Excel cần convert sang Sheets sau)
+const waterData = {
+  "Khu vực Huế 1": 0.8,
+  "Khu vực Huế 2": 1.3,
+  "Khu vực Huế 3": 2.1,
+  "Khu vực Huế 4": 0.5,
+  "Khu vực Huế 5": 2.8,
+  "Khu vực Huế 6": 1.7
+};
+
+function getColor(value) {
+  if (value > 2) return "#e60000";   // đỏ
+  if (value > 1) return "#ff9900";   // cam
+  return "#00b050";                  // xanh
+}
