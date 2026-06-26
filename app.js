@@ -16,49 +16,49 @@ const map = new maplibregl.Map({
     }]
   },
   center: [107.585, 16.463],
-  zoom: 10.5
+  zoom: 9.5
 });
 
-// 📍 Huế center
-new maplibregl.Marker()
-  .setLngLat([107.585, 16.463])
-  .setPopup(new maplibregl.Popup().setText("TP Huế"))
-  .addTo(map);
-
-// 🌊 dữ liệu mực nước (giả lập để bạn nối Sheets sau)
-const waterData = {
-  "Huế": 1.2
+// -----------------------------
+// 🌊 DỮ LIỆU GIẢ LẬP (SAU NỐI GOOGLE SHEETS)
+// -----------------------------
+const weatherData = {
+  water: 1.2,   // mực nước
+  rain: 85,     // mm mưa
+  storm: "không" // bão
 };
 
-// 🎯 lấy ranh giới thật từ OpenStreetMap (KHÔNG vẽ tay)
+// -----------------------------
+// 🧠 LOGIC MÀU NGUY HIỂM
+// -----------------------------
+function getColor(water, rain) {
+  if (water > 2 || rain > 150) return "#d60000";
+  if (water > 1 || rain > 80) return "#ff9d00";
+  return "#00b050";
+}
+
+// -----------------------------
+// 🌍 LẤY HUẾ THẬT (OSM)
+// -----------------------------
 fetch("https://nominatim.openstreetmap.org/search.php?q=Thua+Thien+Hue&polygon_geojson=1&format=geojson")
   .then(res => res.json())
   .then(data => {
 
-    // gán mực nước vào feature
-    data.features.forEach(f => {
-      f.properties.muc = waterData["Huế"] || 0;
-      f.properties.name = "Thành phố Huế";
-    });
+    const feature = data.features[0];
 
     map.addSource('hue', {
       type: 'geojson',
-      data: data
+      data: feature
     });
 
-    // 🟢🟡🔴 màu theo mực nước
+    // 🎨 màu theo mưa + nước
     map.addLayer({
       id: 'hue-fill',
       type: 'fill',
       source: 'hue',
       paint: {
-        'fill-color': [
-          'case',
-          ['>', ['get', 'muc'], 2], '#e60000',
-          ['>', ['get', 'muc'], 1], '#ff9900',
-          '#00b050'
-        ],
-        'fill-opacity': 0.5
+        'fill-color': getColor(weatherData.water, weatherData.rain),
+        'fill-opacity': 0.55
       }
     });
 
@@ -72,12 +72,17 @@ fetch("https://nominatim.openstreetmap.org/search.php?q=Thua+Thien+Hue&polygon_g
       }
     });
 
-    map.on('click', 'hue-fill', (e) => {
-      const f = e.features[0];
-      new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(`<b>${f.properties.name}</b><br>Mực nước: ${f.properties.muc}m`)
-        .addTo(map);
+    // 📍 popup
+    map.on('click', 'hue-fill', () => {
+      alert(
+        `HUẾ\nMực nước: ${weatherData.water}m\nMưa: ${weatherData.rain}mm\nBão: ${weatherData.storm}`
+      );
     });
+
+    // 📊 panel UI
+    document.getElementById('info').innerHTML =
+      `🌊 Mực nước: ${weatherData.water}m<br>
+       🌧️ Mưa: ${weatherData.rain}mm<br>
+       🌀 Bão: ${weatherData.storm}`;
 
   });
