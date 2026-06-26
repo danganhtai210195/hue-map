@@ -1,71 +1,33 @@
-const map = new maplibregl.Map({
-  container: 'map',
-  style: {
-    version: 8,
-    sources: {
-      osm: {
-        type: 'raster',
-        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-        tileSize: 256
-      }
-    },
-    layers: [
-      {
-        id: 'osm',
-        type: 'raster',
-        source: 'osm'
-      }
-    ]
-  },
-  center: [107.585, 16.463],
-  zoom: 11
-});
+// lấy ranh giới Huế từ OpenStreetMap (Overpass)
+fetch("https://overpass-api.de/api/interpreter?data=[out:json];area[name=%22Th%C3%A0nh%20ph%E1%BB%91%20Hu%E1%BA%BF%22];(relation[admin_level=8](area););out%20geom;")
+.then(res => res.json())
+.then(osm => {
 
-// marker Huế
-new maplibregl.Marker()
-  .setLngLat([107.585, 16.463])
-  .setPopup(new maplibregl.Popup().setText("TP Huế"))
-  .addTo(map);
+  const geojson = osmtogeojson(osm);
 
-// load ranh giới phường
-fetch('/hue-boundary.geojson')
-  .then(res => res.json())
-  .then(data => {
-
-    map.addSource('hue', {
-      type: 'geojson',
-      data: data
-    });
-
-    // viền phường
-    map.addLayer({
-      id: 'hue-fill',
-      type: 'fill',
-      source: 'hue',
-      paint: {
-        'fill-color': '#2b8cbe',
-        'fill-opacity': 0.2
-      }
-    });
-
-    map.addLayer({
-      id: 'hue-line',
-      type: 'line',
-      source: 'hue',
-      paint: {
-        'line-color': '#000',
-        'line-width': 2
-      }
-    });
-
-    // click từng phường
-    map.on('click', 'hue-fill', (e) => {
-      const name = e.features[0].properties.name;
-
-      new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setText(name)
-        .addTo(map);
-    });
-
+  map.addSource('hue', {
+    type: 'geojson',
+    data: geojson
   });
+
+  map.addLayer({
+    id: 'hue-fill',
+    type: 'fill',
+    source: 'hue',
+    paint: {
+      'fill-color': '#2b8cbe',
+      'fill-opacity': 0.25
+    }
+  });
+
+  map.addLayer({
+    id: 'hue-line',
+    type: 'line',
+    source: 'hue',
+    paint: {
+      'line-color': '#000',
+      'line-width': 2
+    }
+  });
+
+});
