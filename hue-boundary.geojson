@@ -3,22 +3,26 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {
-        "name": "Phường Thuận Hóa"
-      },
+      "properties": { "name": "Khu vực Thuận Hóa" },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [[[107.55,16.47],[107.60,16.47],[107.60,16.43],[107.55,16.43],[107.55,16.47]]]
+        "coordinates": [[[107.55,16.47],[107.62,16.47],[107.62,16.42],[107.55,16.42],[107.55,16.47]]]
       }
     },
     {
       "type": "Feature",
-      "properties": {
-        "name": "Phường Phú Xuân"
-      },
+      "properties": { "name": "Khu vực Phú Xuân" },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [[[107.58,16.49],[107.63,16.49],[107.63,16.45],[107.58,16.45],[107.58,16.49]]]
+        "coordinates": [[[107.57,16.50],[107.64,16.50],[107.64,16.45],[107.57,16.45],[107.57,16.50]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Khu vực Hương Trà" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[107.48,16.55],[107.60,16.55],[107.60,16.48],[107.48,16.48],[107.48,16.55]]]
       }
     }
   ]
