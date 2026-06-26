@@ -1,8 +1,30 @@
-// Test đơn giản KHÔNG phụ thuộc Internet map tiles
-document.getElementById("map").innerHTML =
-  "<div style='padding:20px;font-family:Arial'>"
-  + "✅ Website đã chạy thành công trên Vercel<br><br>"
-  + "❗ Lỗi hiện tại: bị chặn bản đồ nền (map tiles)<br><br>"
-  + "👉 Điều này là do mạng hoặc ISP chặn OpenStreetMap<br><br>"
-  + "📌 Bước tiếp theo: chuyển sang Google Maps API (ổn định hơn)"
-  + "</div>";
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: {
+      osm: {
+        type: 'raster',
+        tiles: [
+          'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+        ],
+        tileSize: 256
+      }
+    },
+    layers: [
+      {
+        id: 'osm',
+        type: 'raster',
+        source: 'osm'
+      }
+    ]
+  },
+  center: [107.585, 16.463], // Huế
+  zoom: 11
+});
+
+// marker Huế
+new maplibregl.Marker()
+  .setLngLat([107.585, 16.463])
+  .setPopup(new maplibregl.Popup().setText("TP Huế"))
+  .addTo(map);
