@@ -9,82 +9,59 @@ const map = new maplibregl.Map({
         tileSize: 256
       }
     },
-    layers: [
-      {
-        id: 'osm',
-        type: 'raster',
-        source: 'osm'
-      }
-    ]
+    layers: [{
+      id: 'osm',
+      type: 'raster',
+      source: 'osm'
+    }]
   },
   center: [107.585, 16.463],
   zoom: 10.5
 });
 
-// 📍 marker Huế
+// marker Huế
 new maplibregl.Marker()
   .setLngLat([107.585, 16.463])
-  .setPopup(new maplibregl.Popup().setText("Thành phố Huế"))
+  .setPopup(new maplibregl.Popup().setText("TP Huế"))
   .addTo(map);
 
-// 🟧 VÙNG HUẾ (KHÔNG GIẢ LẬP Ô VUÔNG NHỎ NỮA)
-const huePolygon = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "name": "Khu vực TP Huế" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [107.40, 16.65],
-          [107.75, 16.65],
-          [107.75, 16.25],
-          [107.40, 16.25],
-          [107.40, 16.65]
-        ]]
+
+// 🔥 LOAD RANH GIỚI THẬT (KHÔNG VẼ TAY)
+fetch('hue-boundary.geojson')
+  .then(res => res.json())
+  .then(data => {
+
+    map.addSource('hue', {
+      type: 'geojson',
+      data: data
+    });
+
+    map.addLayer({
+      id: 'hue-fill',
+      type: 'fill',
+      source: 'hue',
+      paint: {
+        'fill-color': '#ff4d00',
+        'fill-opacity': 0.45
       }
-    }
-  ]
-};
+    });
 
-map.on('load', () => {
+    map.addLayer({
+      id: 'hue-line',
+      type: 'line',
+      source: 'hue',
+      paint: {
+        'line-color': '#000',
+        'line-width': 2
+      }
+    });
 
-  map.addSource('hue', {
-    type: 'geojson',
-    data: huePolygon
+    map.on('click', 'hue-fill', (e) => {
+      const name = e.features[0].properties.name;
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(`<b>${name}</b>`)
+        .addTo(map);
+    });
+
   });
-
-  // fill rõ ràng
-  map.addLayer({
-    id: 'hue-fill',
-    type: 'fill',
-    source: 'hue',
-    paint: {
-      'fill-color': '#ff3b00',
-      'fill-opacity': 0.45
-    }
-  });
-
-  // viền đậm
-  map.addLayer({
-    id: 'hue-line',
-    type: 'line',
-    source: 'hue',
-    paint: {
-      'line-color': '#000000',
-      'line-width': 3
-    }
-  });
-
-  // click popup
-  map.on('click', 'hue-fill', (e) => {
-    const name = e.features[0].properties.name;
-
-    new maplibregl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(`<b>${name}</b>`)
-      .addTo(map);
-  });
-
-});
