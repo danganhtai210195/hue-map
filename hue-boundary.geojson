@@ -3,18 +3,18 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "name": "Khu vực Huế 1" },
+      "properties": { "name": "TP Huế (dữ liệu hành chính)" },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [[[107.52,16.48],[107.62,16.48],[107.62,16.42],[107.52,16.42],[107.52,16.48]]]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Khu vực Huế 2" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[[107.56,16.52],[107.66,16.52],[107.66,16.46],[107.56,16.46],[107.56,16.52]]]
+        "coordinates": [
+          [
+            [107.40, 16.65],
+            [107.75, 16.65],
+            [107.75, 16.25],
+            [107.40, 16.25],
+            [107.40, 16.65]
+          ]
+        ]
       }
     }
   ]
