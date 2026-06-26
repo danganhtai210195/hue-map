@@ -3,12 +3,18 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {
-        "name": "Thành phố Huế"
-      },
+      "properties": { "name": "Khu vực Huế 1" },
       "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": []
+        "type": "Polygon",
+        "coordinates": [[[107.45,16.60],[107.65,16.60],[107.65,16.45],[107.45,16.45],[107.45,16.60]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Khu vực Huế 2" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[107.50,16.55],[107.70,16.55],[107.70,16.40],[107.50,16.40],[107.50,16.55]]]
       }
     }
   ]
